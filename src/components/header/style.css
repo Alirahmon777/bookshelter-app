@@ -1,0 +1,17 @@
+.search-icon {
+  z-index: 100;
+}
+
+.search-icon.black path {
+  stroke: black;
+}
+
+#header-search::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url('../../assets/svgs/clear-icon.svg');
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}

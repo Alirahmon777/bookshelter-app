@@ -1,0 +1,14 @@
+.notfound {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notfound-btns {
+  margin-top: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
