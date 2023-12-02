@@ -6,19 +6,22 @@ import { Theme } from '@mui/material/styles';
 
 interface IInputProps {
   id: string;
-  label: string;
+  label: string | null;
   placeholder: string;
   sx?: SxProps<Theme>;
   type: string;
+  fullWidth?: boolean;
 }
-const Input = ({ label, id, placeholder, sx, type }: IInputProps) => {
+const Input = ({ label, id, placeholder, sx, type, fullWidth = false }: IInputProps) => {
   return (
-    <FormControl variant='standard' sx={sx} fullWidth>
-      <InputLabel shrink htmlFor={id} sx={{ fontSize: '14px', fontWeight: 500, color: '#151515' }}>
-        {label}
-      </InputLabel>
+    <FormControl variant='standard' sx={sx} fullWidth={fullWidth}>
+      {label && (
+        <InputLabel shrink htmlFor={id} sx={{ fontSize: '14px', fontWeight: 500, color: '#151515' }}>
+          {label}
+        </InputLabel>
+      )}
       <TextField
-        fullWidth
+        fullWidth={fullWidth}
         hiddenLabel
         id={id}
         type={type}
@@ -30,7 +33,7 @@ const Input = ({ label, id, placeholder, sx, type }: IInputProps) => {
             borderRadius: '6px',
           },
           '& .MuiInputBase-input': {
-            borderRadius: '12px',
+            borderRadius: '6px',
             padding: '14px 16px',
             width: '100%',
             lineHeight: '19px',

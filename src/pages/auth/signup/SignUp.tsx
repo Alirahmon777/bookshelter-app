@@ -10,10 +10,25 @@ const SignUp = () => {
     >
       <AuthCard title='Sign Up'>
         <form>
-          <Input label='Your name' placeholder='Enter your name' id='name-input' sx={{ mt: '28px' }} type='text' />
-          <Input label='Your email' placeholder='Enter your email' id='email-input' sx={{ mt: '16px' }} type='email' />
+          <Input
+            label='Your name'
+            fullWidth
+            placeholder='Enter your name'
+            id='name-input'
+            sx={{ mt: '28px' }}
+            type='text'
+          />
+          <Input
+            label='Your email'
+            fullWidth
+            placeholder='Enter your email'
+            id='email-input'
+            sx={{ mt: '16px' }}
+            type='email'
+          />
           <Input
             label='Your username'
+            fullWidth
             placeholder='Enter your username'
             id='username-input'
             sx={{ mt: '16px' }}
