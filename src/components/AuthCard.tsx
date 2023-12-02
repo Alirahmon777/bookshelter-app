@@ -1,10 +1,6 @@
 import { Card, Stack, CardContent, Button, Typography, Divider } from '@mui/material';
 import { Icons } from '.';
-
-interface IAuthCardProps {
-  title: string;
-  children?: React.ReactNode;
-}
+import { IAuthCardProps } from '../types/interfaces';
 
 export default function AuthCard({ title, children }: IAuthCardProps): React.JSX.Element {
   return (

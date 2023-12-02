@@ -6,7 +6,7 @@ import {
   deleteBookFailure,
   deleteBookStart,
   deleteBookSuccess,
-  fetchBookByIdSuccess,
+  fetchBookByTitleSuccess,
   fetchBooksFailure,
   fetchBooksStart,
   fetchBooksSuccess,
@@ -14,8 +14,9 @@ import {
   updateBookStart,
   updateBookSuccess,
 } from '../slice/book.slice';
+import { IBook } from '../types/interfaces';
 
-export const fetchBooks = () => async (dispatch: any) => {
+export const fetchMyBooks = () => async (dispatch: any) => {
   try {
     dispatch(fetchBooksStart());
     const data = await BookService.getBook();
@@ -25,17 +26,17 @@ export const fetchBooks = () => async (dispatch: any) => {
   }
 };
 
-export const fetchBook = () => async (dispatch: any) => {
+export const SearchBooks = (title: string) => async (dispatch: any) => {
   try {
     dispatch(fetchBooksStart());
-    const data = await BookService.getBook();
-    dispatch(fetchBookByIdSuccess(data));
+    const data = await BookService.getBookByTitle(title);
+    dispatch(fetchBookByTitleSuccess(data));
   } catch (error) {
     dispatch(fetchBooksFailure('Error fetching books'));
   }
 };
 
-export const addBook = (formData: FormData) => async (dispatch: any) => {
+export const addBook = (formData: IBook) => async (dispatch: any) => {
   try {
     dispatch(addBookStart());
     const data = await BookService.postBook(formData);
@@ -45,7 +46,7 @@ export const addBook = (formData: FormData) => async (dispatch: any) => {
   }
 };
 
-export const updateBook = (id: number, updatedData: Partial<Book>) => async (dispatch: any) => {
+export const updateBook = (id: number, updatedData: Partial<IBook>) => async (dispatch: any) => {
   try {
     dispatch(updateBookStart());
     const data = await BookService.updateBook(id, updatedData);

@@ -1,18 +1,9 @@
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles';
+import { IInputProps } from '../types/interfaces';
 
-interface IInputProps {
-  id: string;
-  label: string | null;
-  placeholder: string;
-  sx?: SxProps<Theme>;
-  type: string;
-  fullWidth?: boolean;
-}
-const Input = ({ label, id, placeholder, sx, type, fullWidth = false }: IInputProps) => {
+const Input = ({ label, id, placeholder, sx, type, fullWidth = false, value, onChange }: IInputProps) => {
   return (
     <FormControl variant='standard' sx={sx} fullWidth={fullWidth}>
       {label && (
@@ -24,6 +15,8 @@ const Input = ({ label, id, placeholder, sx, type, fullWidth = false }: IInputPr
         fullWidth={fullWidth}
         hiddenLabel
         id={id}
+        value={value}
+        onChange={onChange}
         type={type}
         placeholder={placeholder}
         sx={{

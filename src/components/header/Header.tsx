@@ -1,67 +1,25 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Avatar from '@mui/material/Avatar';
-import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
+import { AppBar, Box, Toolbar, IconButton, Avatar, Badge, MenuItem, Menu } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Icons } from '..';
 import avatarImage from '../../assets/images/user-image.png';
 import './style.css';
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  borderRadius: '6px',
-  '& .MuiInputBase-input': {
-    padding: '12px',
-    borderRadius: '6px',
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-  },
-  '& .MuiInputBase-input:focus': {
-    backgroundColor: '#FEFEFE',
-  },
-  fontWeight: 400,
-  fontSize: '16px',
-}));
+import { Search, SearchIconWrapper, StyledInputBase } from '../../helpers/tags';
+import { SearchBooks } from '../../dispatch/book.dispatch';
+import { useDispatch } from 'react-redux';
 
 export default function Header() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [isInputFocused, setIsInputFocused] = React.useState(false);
-
+  const [searchText, setSearchText] = React.useState('');
+  const dispatch = useDispatch();
   const handleInputFocus = () => {
     setIsInputFocused(true);
+  };
+
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+    SearchBooks(e.target.value)(dispatch);
   };
 
   const handleInputBlur = () => {
@@ -96,7 +54,16 @@ export default function Header() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem
+        onClick={() => {
+          setAnchorEl(null);
+          localStorage.removeItem('key');
+          localStorage.removeItem('secret');
+          window.location.reload();
+        }}
+      >
+        Log Out
+      </MenuItem>
     </Menu>
   );
 
@@ -114,6 +81,7 @@ export default function Header() {
             <StyledInputBase
               onFocus={handleInputFocus}
               onBlur={handleInputBlur}
+              onChange={handleSearch}
               type='search'
               id='header-search'
               placeholder='Search for any training you want'
@@ -149,6 +117,8 @@ export default function Header() {
         </SearchIconWrapper>
         <StyledInputBase
           onFocus={handleInputFocus}
+          value={searchText}
+          onChange={handleSearch}
           onBlur={handleInputBlur}
           placeholder='Search for any training you want'
           sx={{

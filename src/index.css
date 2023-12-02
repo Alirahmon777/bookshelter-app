@@ -40,6 +40,12 @@ button {
   font-weight: 500;
 }
 
+.create-modal-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media screen and (min-width: 1740px) {
   body {
     background-size: contain;
@@ -87,5 +93,11 @@ button {
 @media screen and (max-width: 320px) {
   body {
     background-position: -925px 0;
+  }
+}
+
+@media screen and (max-height: 630px) {
+  .create-modal-wrapper {
+    display: inline;
   }
 }

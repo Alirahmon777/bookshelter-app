@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Card, Stack, CardContent, Typography, Chip, Tooltip } from '@mui/material';
-
 import CardBtns from './CardBtns';
+import { IBook } from '../../types/interfaces';
 
-const BookCard = ({ book }: { book: Book }) => {
+const BookCard = ({ book, isSearchCard }: { book: IBook; isSearchCard?: boolean }) => {
   const [showBtns, setShowBtns] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -36,7 +36,10 @@ const BookCard = ({ book }: { book: Book }) => {
 
   return (
     <Tooltip
-      title={windowWidth > 899 ? 'Hover to show delete and edit buttons' : 'Click to show delete and edit buttons'}
+      title={
+        !isSearchCard &&
+        (windowWidth > 899 ? 'Hover to show delete and edit buttons' : 'Click to show delete and edit buttons')
+      }
       placement='top'
     >
       <Card
@@ -55,7 +58,7 @@ const BookCard = ({ book }: { book: Book }) => {
         onMouseEnter={() => handleMouse(true)}
         onMouseLeave={() => handleMouse(false)}
       >
-        <CardContent sx={{ padding: 0, pb: '0 !important' }}>
+        <CardContent sx={{ padding: 0, pb: '0 !important', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' }}>
           <Typography variant='h3' sx={{ fontSize: 16, color: '#151515' }} fontWeight={700}>
             {book.title}
           </Typography>
@@ -76,7 +79,7 @@ const BookCard = ({ book }: { book: Book }) => {
             />
           </Stack>
         </CardContent>
-        <CardBtns showBtns={showBtns} handleDelete={handleDelete} handleEdit={handleEdit} />
+        {!isSearchCard && <CardBtns showBtns={showBtns} handleDelete={handleDelete} handleEdit={handleEdit} />}
       </Card>
     </Tooltip>
   );

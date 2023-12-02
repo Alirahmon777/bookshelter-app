@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IBookState } from '../types/interfaces';
 
-const initialState: BookState = {
+const initialState: IBookState = {
   isLoading: false,
   books: [],
-  book: null,
+  searchedBooks: [],
   error: null,
 };
 
@@ -19,9 +20,9 @@ export const bookSlice = createSlice({
       state.books = action.payload;
       state.error = null;
     },
-    fetchBookByIdSuccess: (state, action) => {
+    fetchBookByTitleSuccess: (state, action) => {
       state.isLoading = false;
-      state.book = action.payload;
+      state.searchedBooks = action.payload;
       state.error = null;
     },
     fetchBooksFailure: (state, action) => {
@@ -71,12 +72,13 @@ export const bookSlice = createSlice({
       state.error = action.payload;
     },
   },
+  
 });
 
 export const {
   fetchBooksStart,
   fetchBooksSuccess,
-  fetchBookByIdSuccess,
+  fetchBookByTitleSuccess,
   fetchBooksFailure,
   addBookStart,
   addBookSuccess,
@@ -88,7 +90,5 @@ export const {
   deleteBookSuccess,
   deleteBookFailure,
 } = bookSlice.actions;
-
-
 
 export default bookSlice.reducer;

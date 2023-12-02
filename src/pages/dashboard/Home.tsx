@@ -1,42 +1,32 @@
-import { Icons, Input } from '../../components';
+import { useEffect, useState } from 'react';
+import { Icons, Input, Loader } from '../../components';
 import BookCard from '../../components/book/BookCard';
 import Header from '../../components/header/Header';
-import { Box, Container, Button, Typography } from '@mui/material';
-
-const books: Book[] = [
-  {
-    id: 1,
-    title: 'Raspberry Pi User Guide',
-    cover: '',
-    author: 'Eben Upton',
-    published: 2023,
-    pages: 100,
-  },
-  {
-    id: 1,
-    title: 'Raspberry Pi User Guide',
-    cover: '',
-    author: 'Eben Upton',
-    published: 2023,
-    pages: 100,
-  },
-  {
-    id: 1,
-    title: 'Raspberry Pi User Guide',
-    cover: '',
-    author: 'Eben Upton',
-    published: 2023,
-    pages: 100,
-  },
-];
+import { Box, Container, Button, Typography, Alert, AlertTitle, Snackbar } from '@mui/material';
+import CreateBookModal from '../../components/book/CreateBookModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+import { fetchMyBooks } from '../../dispatch/book.dispatch';
 
 const Home = () => {
+  const [showModal, setShowModal] = useState(false);
+  const { searchedBooks, books, isLoading, error } = useSelector((state: RootState) => state.book);
+  const dispatch = useDispatch();
+  function getBooks() {
+    fetchMyBooks()(dispatch);
+  }
+  useEffect(() => {
+    getBooks();
+  }, []);
+
   return (
     <>
+      {showModal && <CreateBookModal setShowModal={setShowModal} />}
+
       <Container maxWidth='xl'>
         <Header />
-        <main>
-          <section>
+        <main style={{ overflowX: 'hidden' }}>
+          <section style={{ paddingBottom: '20px' }}>
             <Box display={'flex'} justifyContent={'space-between'} mt={'48px'}>
               <Typography
                 variant='h1'
@@ -44,12 +34,9 @@ const Home = () => {
                 fontWeight={700}
                 sx={{ '& span': { color: '#6200EE' }, color: '#fefefe' }}
               >
-                You’ve got <span>7 book</span>
+                You’ve got <span>{!books || !books?.length ? 0 : books.length} book</span>
               </Typography>
-              <form
-                action=''
-                style={{ display: 'flex', alignItems: 'center', gap: '24px', justifyContent: 'flex-end' }}
-              >
+              <form style={{ display: 'flex', alignItems: 'center', gap: '24px', justifyContent: 'flex-end' }}>
                 <Input
                   label={null}
                   id='name'
@@ -71,6 +58,7 @@ const Home = () => {
                   }}
                   startIcon={<Icons.plusIcon />}
                   color='inherit'
+                  onClick={() => setShowModal(true)}
                 >
                   Create Book
                 </Button>
@@ -79,18 +67,57 @@ const Home = () => {
             <Typography mt={'12px'} color={'#fefefe'} fontSize={20}>
               Your task today
             </Typography>
+            {!books || !books?.length ? (
+              <Typography mt={'42px'} color={'#FF0000'} fontSize={20}>
+                You have no books!
+              </Typography>
+            ) : null}
+
+            <Typography mt={'20px'} color={'#fefefe'} fontSize={20}>
+              My Books
+            </Typography>
             <Box
               display={'grid'}
               gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }}
               gap={'24px'}
-              mt={'36px'}
+              mt={'16px'}
+              mb={'10px'}
             >
-              {books.map((book, index) => (
-                <BookCard key={index} book={book} />
+              {isLoading && <Loader />}
+
+              {books?.map((book: any, index) => (
+                <BookCard key={index} book={book.book} />
               ))}
             </Box>
+            {searchedBooks.length ? (
+              <>
+                <Typography mt={'10px'} color={'#fefefe'} fontSize={20}>
+                  Searched Books
+                </Typography>
+                <Box
+                  display={'grid'}
+                  gridTemplateColumns={{ xs: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr' }}
+                  gap={'24px'}
+                  mt={'16px'}
+                >
+                  {isLoading && <Loader />}
+
+                  {searchedBooks.map((book, index) => (
+                    <BookCard key={index} book={book} isSearchCard />
+                  ))}
+                </Box>
+              </>
+            ) : null}
           </section>
         </main>
+        {error && (
+          <Snackbar open={!!error} autoHideDuration={2000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+            <Alert severity='error'>
+              <AlertTitle>Error</AlertTitle>
+              {error} — <strong>check it out!</strong>
+            </Alert>
+          </Snackbar>
+        )}
       </Container>
     </>
   );

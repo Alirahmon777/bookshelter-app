@@ -1,11 +1,8 @@
 import { Box } from '@mui/material';
 import CardBtn from './CardBtn';
 import { Icons } from '..';
-interface ICardBtnsProps {
-  showBtns: boolean;
-  handleDelete: React.MouseEventHandler<HTMLButtonElement>;
-  handleEdit: React.MouseEventHandler<HTMLButtonElement>;
-}
+import { ICardBtnsProps } from '../../types/interfaces';
+
 const CardBtns = ({ showBtns, handleDelete, handleEdit }: ICardBtnsProps) => {
   return (
     <Box
