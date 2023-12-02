@@ -1,4 +1,4 @@
-import { lazy, useEffect, ReactNode } from 'react';
+import { lazy, useEffect } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { IRoutes } from '../types/interfaces';
 import axios from '../helpers/api';
